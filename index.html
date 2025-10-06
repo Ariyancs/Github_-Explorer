@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Explorer</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+    <header>
+        <h1>🐙 GitHub Explorer</h1>
+    </header>
+    
+    <main>
+        <section id="search-section">
+            <h2>Search GitHub Users</h2>
+            <input type="text" id="user-input" placeholder="Enter GitHub username (e.g., torvalds)...">
+            <button id="search-button">Search User</button>
+        </section>
+
+        <section id="user-results-section" class="hidden">
+            <h2>User Profile</h2>
+            <div id="user-profile-card">
+                </div>
+        </section>
+
+        <section id="repo-list-section" class="hidden">
+            <h2>Public Repositories</h2>
+            <div id="repo-list">
+                </div>
+        </section>
+
+        <section id="favorites-section">
+            <h2>My Favorite Repos/Users ⭐</h2>
+            <div id="favorites-list">
+                <p>No favorites saved yet.</p>
+            </div>
+        </section>
+        
+        <div id="loading-spinner" class="hidden">
+            <div class="spinner"></div>
+            <p>Fetching data from GitHub...</p>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
