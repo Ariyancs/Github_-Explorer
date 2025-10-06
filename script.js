@@ -1,4 +1,4 @@
-// --- Configuration ---
+
 const BASE_URL = "https://api.github.com";
 // !!! IMPORTANT: Replace this with your GitHub username or app name
 const USER_AGENT = "Ariyancs-GitHub-Explorer-App"; 
@@ -9,7 +9,7 @@ const FETCH_OPTIONS = {
     }
 };
 
-// --- DOM Elements ---
+
 const userInput = document.getElementById('user-input');
 const searchButton = document.getElementById('search-button');
 const userProfileCard = document.getElementById('user-profile-card');
@@ -20,7 +20,7 @@ const loadingSpinner = document.getElementById('loading-spinner');
 const userResultsSection = document.getElementById('user-results-section');
 
 
-// --- State Management Helpers ---
+
 
 function toggleLoading(isLoading) {
     if (isLoading) {
@@ -40,21 +40,21 @@ function displayError(message) {
     repoListSection.classList.add('hidden');
 }
 
-// --- LocalStorage & Favorites Functions ---
 
-/** Retrieves the favorites array (Repo Full Names) from localStorage. */
+
+
 function getFavorites() {
     const favoritesJSON = localStorage.getItem('githubFavorites');
     return favoritesJSON ? JSON.parse(favoritesJSON) : [];
 }
 
-/** Saves the updated favorites array to localStorage and refreshes the list. */
+
 function saveFavorites(favoritesArray) {
     localStorage.setItem('githubFavorites', JSON.stringify(favoritesArray));
     displayFavoritesList(); 
 }
 
-/** Handles adding or removing a repo/user from favorites. */
+
 function handleFavorites(event) {
     const repoFullName = event.target.dataset.id;
     let favorites = getFavorites();
@@ -74,13 +74,11 @@ function handleFavorites(event) {
     saveFavorites(favorites);
 }
 
-// --- Display Functions ---
 
-/** Displays the main user profile card. */
 function displayUserProfile(user) {
     userResultsSection.classList.remove('hidden');
     
-    // Convert 'null' fields to meaningful text
+    
     const bio = user.bio || 'No bio available.';
     const location = user.location || 'Unknown location.';
     
@@ -107,12 +105,12 @@ function displayUserProfile(user) {
         </div>
     `;
     
-    // Attach favorite listener to the user profile button
+    
     userProfileCard.querySelector('.favorite-repo-btn').addEventListener('click', handleFavorites);
 }
 
 
-/** Displays the list of public repositories. */
+
 function displayRepositoryList(repos) {
     repoList.innerHTML = '';
     repoListSection.classList.remove('hidden');
@@ -130,7 +128,7 @@ function displayRepositoryList(repos) {
         listItem.innerHTML = `
             <h4><a href="${repo.html_url}" target="_blank">${repo.name}</a></h4>
             <p>${repo.description || 'No description provided.'}</p>
-            <p>⭐ ${repo.stargazers_count} | Language: ${repo.language || 'N/A'}</p>
+            <p> ${repo.stargazers_count} | Language: ${repo.language || 'N/A'}</p>
             <button 
                 class="favorite-repo-btn ${favButtonClass}" 
                 data-id="${repoFullName}"
@@ -146,7 +144,7 @@ function displayRepositoryList(repos) {
     });
 }
 
-/** Displays the list of saved favorites (users and repos). */
+
 function displayFavoritesList() {
     const favorites = getFavorites();
     favoritesList.innerHTML = '';
@@ -169,7 +167,7 @@ function displayFavoritesList() {
     });
 }
 
-// --- Main Fetch Functions ---
+
 
 async function fetchRepositories(username) {
     const url = `${BASE_URL}/users/${username}/repos?sort=updated`;
@@ -201,7 +199,7 @@ async function searchUser(username) {
         return;
     }
     
-    // We use the search endpoint, which gives us the best match first
+    
     const url = `${BASE_URL}/search/users?q=${trimmedUsername}&per_page=1`;
     toggleLoading(true);
 
@@ -209,7 +207,7 @@ async function searchUser(username) {
         const response = await fetch(url, FETCH_OPTIONS);
 
         if (!response.ok) {
-            // Check for rate limiting (403 or 429)
+            
             if (response.status === 403 || response.status === 429) {
                 throw new Error("API Rate Limit Exceeded. Please wait a few minutes or provide an Authentication Token.");
             }
@@ -219,7 +217,7 @@ async function searchUser(username) {
         const data = await response.json();
 
         if (data.items && data.items.length > 0) {
-            // Fetch the full user details using the direct URL (data.items[0].url)
+            
             const userResponse = await fetch(data.items[0].url, FETCH_OPTIONS);
             const user = await userResponse.json();
             
@@ -236,7 +234,7 @@ async function searchUser(username) {
 }
 
 
-// --- Event Listeners & Initialization ---
+
 
 searchButton.addEventListener('click', () => {
     searchUser(userInput.value);
